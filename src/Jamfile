@@ -1,0 +1,136 @@
+SubDir HAM_TOP src ;
+
+
+C++FLAGS += -std=c++0x ;
+#C++FLAGS += -std=c++11 ;
+
+
+SEARCH_SOURCE += [ FDirName $(SUBDIR) behavior ] ;
+SEARCH_SOURCE += [ FDirName $(SUBDIR) code ] ;
+SEARCH_SOURCE += [ FDirName $(SUBDIR) data ] ;
+SEARCH_SOURCE += [ FDirName $(SUBDIR) make ] ;
+SEARCH_SOURCE += [ FDirName $(SUBDIR) parser ] ;
+SEARCH_SOURCE += [ FDirName $(SUBDIR) platform unix ] ;
+	# TODO: Handle different platforms!
+SEARCH_SOURCE += [ FDirName $(SUBDIR) process ] ;
+SEARCH_SOURCE += [ FDirName $(SUBDIR) util ] ;
+
+
+SharedLibrary libham.so
+	:
+	# code
+	ActionsDefinition.cpp
+	Assignment.cpp
+	Behavior.cpp
+	BinaryExpression.cpp
+	Block.cpp
+	BuiltInRules.cpp
+	Case.cpp
+	Constant.cpp
+	DumpContext.cpp
+	EvaluationContext.cpp
+	If.cpp
+	Include.cpp
+	Jambase.cpp
+	For.cpp
+	FunctionCall.cpp
+	InListExpression.cpp
+	Jump.cpp
+	Leaf.cpp
+	List.cpp
+	LocalVariableDeclaration.cpp
+	Node.cpp
+	NotExpression.cpp
+	OnExpression.cpp
+	RuleDefinition.cpp
+	RuleInstructions.cpp
+	UserRuleInstructions.cpp
+	Switch.cpp
+	While.cpp
+
+	# data
+	FileStatus.cpp
+	Path.cpp
+	RegExp.cpp
+	RuleActions.cpp
+	String.cpp
+	StringList.cpp
+	StringListOperations.cpp
+	Target.cpp
+	TargetBinder.cpp
+	TargetPool.cpp
+	Time.cpp
+	VariableScope.cpp
+
+	# make
+	Command.cpp
+	MakeTarget.cpp
+	Options.cpp
+	Processor.cpp
+	TargetBuilder.cpp
+	TargetBuildInfo.cpp
+
+	# parser
+	Parser.cpp
+
+	# platform/*
+	PlatformProcessDelegate.cpp
+
+	# process
+	Process.cpp
+
+	# util
+	Constants.cpp
+	OptionIterator.cpp
+	Referenceable.cpp
+
+	:
+	$(TARGET_LIBSTDC++)
+;
+
+
+BinCommand ham
+	:
+	ham.cpp
+
+	:
+	libham.so
+	$(TARGET_LIBSTDC++)
+;
+
+
+SEARCH_SOURCE += [ FDirName $(SUBDIR) test ] ;
+SEARCH_SOURCE += [ FDirName $(SUBDIR) tests ] ;
+
+
+BinCommand ham-tests
+	:
+	# tests
+	ham-tests.cpp
+
+	PathTest.cpp
+	RegExpTest.cpp
+	StringListTest.cpp
+	StringPartTest.cpp
+	StringTest.cpp
+	TargetBinderTest.cpp
+	TimeTest.cpp
+	VariableExpansionTest.cpp
+
+	# test
+	DataBasedTest.cpp
+	DataBasedTestParser.cpp
+	MultipleFilesDataBasedTest.cpp
+	RunnableTest.cpp
+	TemplateBasedTest.cpp
+	Test.cpp
+	TestException.cpp
+	TestFixture.cpp
+	TestRunner.cpp
+	TestSuite.cpp
+
+	:
+	libham.so
+	$(TARGET_LIBSTDC++)
+;
+
